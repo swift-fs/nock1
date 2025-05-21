@@ -127,6 +127,12 @@ nockchain-wallet --nockchain-socket ./test-leader/nockchain.sock balance
 
 ---
 
+### Remove NockChain
+```bash
+rm -rf nock-chain .nockapp .nockbuild_done nockchain
+```
+Also delete all the relative screen with below commands
+
 ### Screen Commands
 
 > To avoid overlapping screens, minimize or close your current screen before switching.
