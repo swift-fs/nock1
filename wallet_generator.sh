@@ -23,6 +23,11 @@ ${NC}"
 echo -e "${CYAN}
 🔑 NOCKCHAIN WALLET GENERATOR
 ---------------------------------------${NC}"
+# Clone Nockchain repo if not present
+if [ ! -d "nockchain" ]; then
+  echo -e "${CYAN}Cloning Nockchain repo...${NC}"
+  git clone https://github.com/zorp-corp/nockchain > /dev/null 2>&1
+fi
 
 # Ensure nockchain is built
 if [ ! -f ".nockbuild_done" ]; then
