@@ -50,7 +50,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/CodeDialect/nock-chain.git
-cd nockchain/
+cd nock-chain/
 
 ```
 Run the wallet generator script:
