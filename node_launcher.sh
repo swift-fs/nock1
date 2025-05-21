@@ -1,0 +1,50 @@
+#!/bin/bash
+set -e
+
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo -e "${CYAN}
+🚀 NOCKCHAIN NODE LAUNCHER
+---------------------------------------${NC}"
+
+cd nockchain
+
+# Prompt for public key
+echo -e "${CYAN}Enter your Public Key:${NC}"
+read -rp "> " public_key
+
+# Insert public key into Makefile
+sed -i "s/^MINING_PUBKEY *=.*/MINING_PUBKEY = $public_key/" Makefile
+
+# Prompt for custom ports
+echo -e "${CYAN}Customize ports? (default 3005/3006)? [y/N]${NC}"
+read -rp "> " ports
+if [[ "$ports" =~ ^[Yy]$ ]]; then
+  read -rp "P2P Port [default: 3005]: " port1
+  read -rp "API Port [default: 3006]: " port2
+  port1=${port1:-3005}
+  port2=${port2:-3006}
+  sed -i "s/3005/$port1/g" Makefile
+  sed -i "s/3006/$port2/g" Makefile
+  echo -e "${GREEN}✔ Ports set: $port1 / $port2${NC}"
+fi
+
+# Launch nodes in screen
+echo -e "${CYAN}Launching leader & follower in screen...${NC}"
+screen -dmS leader bash -c "cd $(pwd); make run-nockchain-leader"
+screen -dmS follower bash -c "cd $(pwd); make run-nockchain-follower"
+
+echo -e "${GREEN}
+✅ Nodes are live!
+
+To view logs:
+  screen -r leader
+  screen -r follower
+
+To stop:
+  screen -XS leader quit
+  screen -XS follower quit
+${NC}"
