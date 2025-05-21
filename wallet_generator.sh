@@ -23,6 +23,42 @@ ${NC}"
 echo -e "${CYAN}
 🔑 NOCKCHAIN WALLET GENERATOR
 ---------------------------------------${NC}"
+sleep 1
+
+# Rust check
+if ! command -v cargo &>/dev/null; then
+  echo -e "${YELLOW}Installing Rust...${NC}"
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y > /dev/null 2>&1
+  source "$HOME/.cargo/env"
+else
+  echo -e "${GREEN}Rust already installed.${NC}"
+fi
+
+# Docker check
+if ! command -v docker &>/dev/null; then
+  echo -e "${YELLOW}Installing Docker...${NC}"
+  sudo apt-get -qq remove docker.io docker-doc docker-compose podman-docker containerd runc > /dev/null 2>&1
+  sudo apt-get -qq update > /dev/null
+  sudo apt-get -qq install -y ca-certificates curl gnupg lsb-release > /dev/null
+  sudo install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg > /dev/null
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudo apt-get -qq update > /dev/null
+  sudo apt-get -qq install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null
+  sudo systemctl enable docker > /dev/null
+  sudo systemctl restart docker
+else
+  echo -e "${GREEN}Docker already installed.${NC}"
+fi
+
+# System dependencies
+echo -e "${CYAN}Installing dependencies...${NC}"
+sudo apt-get -qq update > /dev/null
+sudo apt-get -qq install -y curl iptables build-essential git wget lz4 jq make gcc nano \
+  automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev \
+  tar clang bsdmainutils ncdu unzip screen > /dev/null
+
+
 # Clone Nockchain repo if not present
 if [ ! -d "nockchain" ]; then
   echo -e "${CYAN}Cloning Nockchain repo...${NC}"
