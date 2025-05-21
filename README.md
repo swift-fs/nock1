@@ -7,7 +7,9 @@ Easy scripts to build, generate wallets, and launch Nockchain nodes.
 
 ### $NOCK Details
 Mining starts May 21th. https://nockstats.com/
+
 Total Supply: 4,294,967,296$NOCK Fully mineable token supply
+
 $NOCK is used to pay for blockspace on Nockchain.
 
 
