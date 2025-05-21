@@ -49,7 +49,7 @@ sudo apt -qq install git -y
 Clone the repository:
 
 ```bash
-git clone https://github.com/CodeDialect/nockchain.git
+git clone https://github.com/CodeDialect/nock-chain.git
 cd nockchain/
 
 ```
