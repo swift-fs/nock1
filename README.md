@@ -7,7 +7,7 @@ Easy scripts to build, generate wallets, and launch Nockchain nodes.
 ## Features
 
 - **Wallet Generator**  
-  Builds Nockchain if not already built, then generates a new wallet with keys and memo. Saves to `wallet.txt`.
+  Builds Nockchain if not already built, then generates a new wallet with keys and memo.
 
 - **Node Launcher**  
   Loads wallet keys, allows port customization, updates Makefile, and launches leader & follower nodes in detached `screen` sessions.
@@ -62,7 +62,6 @@ chmod +x wallet-generator.sh
 
 - If this is your first run, it will build Nockchain in a detached `screen` session.
 - Rerun after build completes to generate wallet keys.
-- Wallet keys are saved in `wallet.txt`.
 
 ### 2. Launch Nodes
 
@@ -73,8 +72,7 @@ chmod +x node-launcher.sh
 ./node-launcher.sh
 ```
 
-- Loads wallet public key from `wallet.txt`.
-- Confirm or enter a different public key.
+- Enter a public key.
 - Optionally customize P2P and API ports (default 3005/3006).
 - Launches leader and follower nodes in detached `screen` sessions.
 
@@ -95,6 +93,7 @@ sudo ufw enable
 # Open Nockchain node ports (default)
 sudo ufw allow 3005/tcp
 sudo ufw allow 3006/tcp
+sudo ufw reload
 ```
 
 Make sure these ports match those you set when launching the node (defaults: `3005` for P2P, `3006` for API).
