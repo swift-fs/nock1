@@ -22,6 +22,14 @@ ${NC}"
 echo -e "${CYAN}
 🚀 NOCKCHAIN NODE LAUNCHER
 ---------------------------------------${NC}"
+# Ensure nockchain is built
+if [ ! -f ".nockbuild_done" ]; then
+  echo -e "${YELLOW}Running build in screen...${NC}"
+  screen -dmS nockbuild bash -c "cd nockchain && make build-hoon-all && make install-nockchain && make install-nockchain-wallet && touch ../.nockbuild_done; exec bash"
+  echo -e "${CYAN}⏳ Build running: screen -r nockbuild"
+  echo "Rerun this script once build is complete."
+  exit 0
+fi
 
 cd nockchain
 
