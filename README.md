@@ -56,6 +56,7 @@ cd nockchain/
 Run the wallet generator script:
 
 ```bash
+chmod +x wallet-generator.sh
 ./wallet-generator.sh
 ```
 
@@ -68,6 +69,7 @@ Run the wallet generator script:
 Run the node launcher script:
 
 ```bash
+chmod +x node-launcher.sh
 ./node-launcher.sh
 ```
 
