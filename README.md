@@ -56,8 +56,8 @@ cd nockchain/
 Run the wallet generator script:
 
 ```bash
-chmod +x wallet-generator.sh
-./wallet-generator.sh
+chmod +x wallet_generator.sh
+./wallet_generator.sh
 ```
 
 - If this is your first run, it will build Nockchain in a detached `screen` session.
@@ -68,8 +68,8 @@ chmod +x wallet-generator.sh
 Run the node launcher script:
 
 ```bash
-chmod +x node-launcher.sh
-./node-launcher.sh
+chmod +x node_launcher.sh
+./node_launcher.sh
 ```
 
 - Enter a public key.
