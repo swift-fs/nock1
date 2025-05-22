@@ -62,7 +62,7 @@ chmod +x node_launcher.sh
 ```
 
 - If this is your first run, it will build Nockchain in a detached `screen` session.
-- Rerun using this ```bash ./node_launcher.sh ``` after screen gets closed to generate wallet keys and launch miner.
+- Rerun using this ``` ./node_launcher.sh ``` after screen gets closed to generate wallet keys and launch miner.
 
 - Enter a public key.
 - Optionally customize P2P and API ports (default 3005/3006).
