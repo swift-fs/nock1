@@ -55,7 +55,7 @@ sudo apt -qq install git -y
 Clone the repository:
 
 ```bash
-curl -s https://raw.githubusercontent.com/codedialect/nockchain/node_launcher.sh  | sudo bash
+curl -s https://raw.githubusercontent.com/codedialect/nockchain/main/node_launcher.sh  | sudo bash
 
 ```
 
