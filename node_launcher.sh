@@ -36,7 +36,15 @@ RESET="\e[0m"
 # ========== PATHS ==========
 BINARY_PATH="$HOME/nockchain/target/release/nockchain"
 LOG_PATH="$HOME/nockchain/build.log"
+# --- Root setup ---
+if [ "$(id -u)" -eq 0 ]; then
+  echo -e "\e[33m>> Running as root. Updating system and installing sudo...\e[0m"
+  apt-get update && apt-get upgrade -y
 
+  if ! command -v sudo &> /dev/null; then
+    apt-get install sudo -y
+  fi
+fi
 # ========== PHASE 1: BUILD ==========
 if [ ! -f "$BINARY_PATH" ]; then
     echo -e "${YELLOW}>> Nockchain not built yet. Starting Phase 1 (Build)...${RESET}"
