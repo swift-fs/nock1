@@ -55,7 +55,9 @@ sudo apt -qq install curl -y
 Clone the repository:
 
 ```bash
-curl -s https://raw.githubusercontent.com/codedialect/nockchain/main/node_launcher.sh  | sudo bash
+curl -O https://raw.githubusercontent.com/codedialect/nockchain/main/node_launcher.sh
+chmod +x node_launcher.sh
+./node_launcher.sh
 
 ```
 
