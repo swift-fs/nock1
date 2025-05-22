@@ -48,7 +48,7 @@ $NOCK is used to pay for blockspace on Nockchain.
 
 ```bash
 sudo apt-get -qq update && sudo apt-get upgrade -y
-sudo apt -qq install git -y
+sudo apt -qq install curl -y
 ```
 
 ### Run Nockchain Script
