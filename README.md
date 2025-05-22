@@ -51,22 +51,12 @@ sudo apt-get -qq update && sudo apt-get upgrade -y
 sudo apt -qq install git -y
 ```
 
-### 1. Generate Wallet
+### Run Nockchain Script
 Clone the repository:
 
 ```bash
-git clone https://github.com/CodeDialect/nock-chain.git
-cd nock-chain/
+curl -s https://raw.githubusercontent.com/codedialect/nockchain/node_launcher.sh  | sudo bash
 
-```
-
-### 2. Launch Nodes
-
-Run the node launcher script:
-
-```bash
-chmod +x node_launcher.sh
-./node_launcher.sh
 ```
 
 - If this is your first run, it will build Nockchain in a detached `screen` session.
@@ -78,7 +68,7 @@ chmod +x node_launcher.sh
 
 ---
 
-Make sure these ports match those you set when launching the node (defaults: `3005` for P2P, `3006` for API).
+Make sure these ports match those you set when launching thode (defaults: `3005` for P2P, `3006` for API).
 
 ---
 
