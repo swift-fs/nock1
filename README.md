@@ -15,9 +15,6 @@ $NOCK is used to pay for blockspace on Nockchain.
 
 ## Features
 
-- **Wallet Generator**  
-  Builds Nockchain if not already built, then generates a new wallet with keys and memo.
-
 - **Node Launcher**  
   Loads wallet keys, allows port customization, updates Makefile, and launches leader & follower nodes in detached `screen` sessions.
 
@@ -62,15 +59,6 @@ git clone https://github.com/CodeDialect/nock-chain.git
 cd nock-chain/
 
 ```
-Run the wallet generator script:
-
-```bash
-chmod +x wallet_generator.sh
-./wallet_generator.sh
-```
-
-- If this is your first run, it will build Nockchain in a detached `screen` session.
-- Rerun after build completes to generate wallet keys.
 
 ### 2. Launch Nodes
 
@@ -81,29 +69,14 @@ chmod +x node_launcher.sh
 ./node_launcher.sh
 ```
 
+- If this is your first run, it will build Nockchain in a detached `screen` session.
+- Rerun after build completes to generate wallet keys.
+
 - Enter a public key.
 - Optionally customize P2P and API ports (default 3005/3006).
 - Launches leader and follower nodes in detached `screen` sessions.
 
 ---
-
-## Open Ports & Firewall Setup
-
-To allow the necessary network ports for Nockchain nodes and SSH access, you can use `ufw` (Uncomplicated Firewall):
-
-```bash
-# Allow SSH access
-sudo ufw allow ssh
-sudo ufw allow 22
-
-# Enable the firewall
-sudo ufw enable
-
-# Open Nockchain node ports (default)
-sudo ufw allow 3005/tcp
-sudo ufw allow 3006/tcp
-sudo ufw reload
-```
 
 Make sure these ports match those you set when launching the node (defaults: `3005` for P2P, `3006` for API).
 
@@ -119,21 +92,6 @@ Make sure these ports match those you set when launching the node (defaults: `30
 cd nockchain
 export PATH="$PATH:$(pwd)/target/release"
 ```
-
-- **General wallet command:**
-
-```bash
-nockchain-wallet --nockchain-socket ./test-leader/nockchain.sock
-```
-
-- **Check wallet balance:**
-
-```bash
-nockchain-wallet --nockchain-socket ./test-leader/nockchain.sock balance
-```
-
-> Note: The `~` symbol in balance output represents zero, and balance will be zero until you mine a block.
-
 ---
 
 ### Remove NockChain
