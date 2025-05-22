@@ -87,7 +87,7 @@ export PATH="$PATH:$(pwd)/target/release"
 
 ### Remove NockChain
 ```bash
-rm -rf nock-chain .nockapp .nockbuild_done nockchain
+sudo rm -rf nock-chain .nockapp .nockbuild_done nockchain
 ```
 Also delete all the relative screen with below commands
 
