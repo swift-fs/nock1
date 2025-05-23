@@ -19,7 +19,7 @@ echo -e "${CYAN}
                                                                                                                                 
 ${YELLOW}                      :: Powered by Noderhunterz ::
 ${NC}"
-NCK_DIR="$HOME/nockchain"
+NCK_DIR="$HOME/nock-dir/nockchain"
 NCK_BIN="$NCK_DIR/target/release/nockchain"
 
 # Check if nockchain build exists
