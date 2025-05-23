@@ -125,13 +125,25 @@ sudo ufw allow 3005/udp
 sudo ufw allow 3006/udp
 sudo ufw --force enable
 
-# ========== MINING INSTRUCTIONS ==========
-echo -e "${CYAN}>> Run Miner Instructions (Advanced Setup for Multiple Miners)${RESET}"
-echo -e "\nTo run Miner 1 (repeat for Miner 2, Miner 3, etc.):"
-echo -e "\nCommands:\n"
-echo -e "cd ~/nockchain"
-echo -e "mkdir miner1 && cd miner1"
-echo -e "screen -S miner1"
-echo -e "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \\\nMINIMAL_LOG_FORMAT=true \\\nnockchain --mining-pubkey $MINING_KEY --mine"
-echo -e "\nTo minimize screen: Ctrl + A + D"
-echo -e "\n${CYAN}NOTES:${RESET}"
+# Automatically run miner1 in a screen session with full config
+cd ~/nockchain
+mkdir -p miner1 && cd miner1
+screen -dmS miner1 bash -c "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \
+MINIMAL_LOG_FORMAT=true \
+nockchain --mining-pubkey $MINING_KEY --mine"
+
+# Prompt for multiple miners
+read -rp "$(echo -e '\e[33mDo you want to run multiple miners? Enter number (e.g. 3 for 3 miners total), or 1 to skip: \e[0m')" NUM_MINERS
+if [[ "$NUM_MINERS" =~ ^[2-9][0-9]*$ ]]; then
+  for i in $(seq 2 "$NUM_MINERS"); do
+    mkdir -p ~/nockchain/miner$i
+    screen -dmS miner$i bash -c "cd ~/nockchain/miner$i && \
+RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \
+MINIMAL_LOG_FORMAT=true \
+nockchain --mining-pubkey $MINING_KEY --mine"
+    echo -e "\e[32m>> Miner $i started in screen session 'miner$i'.\e[0m"
+  done
+else
+  echo -e "\e[36m>> Skipping additional miners.\e[0m"
+fi
+
