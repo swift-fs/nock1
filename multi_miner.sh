@@ -61,6 +61,7 @@ read -rp "Enter 1 or 2: " MINER_MODE
 
 mkdir -p miner1 && cd miner1
 sudo sysctl -w vm.overcommit_memory=1
+export PATH="$HOME/.cargo/bin:$PATH"
 
 if [[ "$MINER_MODE" == "1" ]]; then
   screen -dmS miner1 bash -c "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \\
