@@ -109,13 +109,7 @@ Also delete all the relative screen with below commands
 - Reattach leader logs screen:
 
 ```bash
-screen -r leader
-```
-
-- Reattach follower logs screen:
-
-```bash
-screen -r follower
+screen -r miner
 ```
 
 - Minimize (detach) current screen session:
