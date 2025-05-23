@@ -127,6 +127,7 @@ sudo ufw --force enable
 
 # Automatically run miner1 in a screen session with full config
 mkdir -p miner1 && cd miner1
+sudo sysctl -w vm.overcommit_memory=1
 screen -dmS miner1 bash -c "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \
 MINIMAL_LOG_FORMAT=true \
 nockchain --mining-pubkey $MINING_KEY --mine"
