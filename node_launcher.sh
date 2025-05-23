@@ -45,13 +45,13 @@ if [ "$(id -u)" -eq 0 ]; then
     apt-get install sudo -y
   fi
 fi
-# ========== PHASE 1: BUILD ==========
+
 if [ ! -f "$BINARY_PATH" ]; then
     echo -e "${YELLOW}>> Nockchain not built yet. Starting Phase 1 (Build)...${RESET}"
 
     echo -e "${CYAN}>> Installing system dependencies...${RESET}"
     sudo apt-get update && sudo apt-get upgrade -y
-    sudo apt install -y curl ufw sudo screen iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libclang-dev llvm-dev
+    sudo apt install -y curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libclang-dev llvm-dev
 
     if ! command -v cargo &> /dev/null; then
         echo -e "${CYAN}>> Installing Rust...${RESET}"
@@ -121,24 +121,28 @@ sudo ufw allow ssh
 sudo ufw allow 22
 sudo ufw allow 3005/tcp
 sudo ufw allow 3006/tcp
-sudo ufw allow 3007/tcp
-sudo ufw allow 3006/udp
 sudo ufw allow 3005/udp
-sudo ufw allow 3007/udp
+sudo ufw allow 3006/udp
 sudo ufw --force enable
 
-# ========== START MINER ==========
-echo -e "${CYAN}>> Starting miner in screen session 'miner'...${RESET}"
-screen -dmS miner bash -c "nockchain --mining-pubkey $MINING_KEY --mine \
-  --peer /ip4/95.216.102.60/udp/3006/quic-v1 \
-  --peer /ip4/65.108.123.225/udp/3006/quic-v1 \
-  --peer /ip4/65.109.156.108/udp/3006/quic-v1 \
-  --peer /ip4/65.21.67.175/udp/3006/quic-v1 \
-  --peer /ip4/65.109.156.172/udp/3006/quic-v1 \
-  --peer /ip4/34.174.22.166/udp/3006/quic-v1 \
-  --peer /ip4/34.95.155.151/udp/30000/quic-v1 \
-  --peer /ip4/34.18.98.38/udp/30000/quic-v1"
+# Automatically run miner1 in a screen session with full config
+mkdir -p miner1 && cd miner1
+screen -dmS miner1 bash -c "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \
+MINIMAL_LOG_FORMAT=true \
+nockchain --mining-pubkey $MINING_KEY --mine"
 
-echo -e "${GREEN}>> Miner is now running in screen 'miner'!${RESET}"
-echo -e "${YELLOW}To view it: screen -r miner${RESET}"
-echo -e "${YELLOW}To list all screens: screen -ls${RESET}"
+# Prompt for multiple miners
+read -rp "$(echo -e '\e[33mDo you want to run multiple miners? Enter number (e.g. 3 for 3 miners total), or 1 to skip: \e[0m')" NUM_MINERS
+if [[ "$NUM_MINERS" =~ ^[2-9][0-9]*$ ]]; then
+  for i in $(seq 2 "$NUM_MINERS"); do
+    mkdir -p ~/nockchain/miner$i
+    screen -dmS miner$i bash -c "cd ~/nockchain/miner$i && \
+RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \
+MINIMAL_LOG_FORMAT=true \
+nockchain --mining-pubkey $MINING_KEY --mine"
+    echo -e "\e[32m>> Miner $i started in screen session 'miner$i'.\e[0m"
+  done
+else
+  echo -e "\e[36m>> Skipping additional miners.\e[0m"
+fi
+
