@@ -42,16 +42,48 @@ if screen -list | grep -q "miner"; then
     screen -XS miner quit
 fi
 
-# Setup miner1 directory and screen
-echo -e "${CYAN}>> Setting up miner1...${RESET}"
+# Ask user which mode to run miner1 in
+echo -e "${YELLOW}Choose how to run miner1:
+1) Without peers
+2) With recommended peers${RESET}"
+read -rp "Enter 1 or 2: " MINER_MODE
+
 mkdir -p miner1 && cd miner1
 sudo sysctl -w vm.overcommit_memory=1
-screen -dmS miner1 bash -c "cd $NCK_DIR/miner1 && \
-RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \\
-MINIMAL_LOG_FORMAT=true \\
-$NCK_BIN --mining-pubkey $MINING_KEY --mine"
 
-echo -e "${GREEN}>> Miner 1 started in screen session 'miner1'.${RESET}"
+if [[ "$MINER_MODE" == "1" ]]; then
+  screen -dmS miner1 bash -c "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \\
+  MINIMAL_LOG_FORMAT=true \\
+  $NCK_BIN --mining-pubkey $MINING_KEY --mine"
+  echo -e "${GREEN}>> Miner1 started without peers in screen session 'miner1'.${RESET}"
+
+elif [[ "$MINER_MODE" == "2" ]]; then
+  screen -dmS miner1 bash -c "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \\
+  MINIMAL_LOG_FORMAT=true \\
+  $NCK_BIN --mine \\
+  --mining-pubkey $MINING_KEY \\
+  --peer /ip4/95.216.102.60/udp/3006/quic-v1 \\
+  --peer /ip4/65.108.123.225/udp/3006/quic-v1 \\
+  --peer /ip4/65.109.156.108/udp/3006/quic-v1 \\
+  --peer /ip4/65.21.67.175/udp/3006/quic-v1 \\
+  --peer /ip4/65.109.156.172/udp/3006/quic-v1 \\
+  --peer /ip4/34.174.22.166/udp/3006/quic-v1 \\
+  --peer /ip4/34.95.155.151/udp/30000/quic-v1 \\
+  --peer /ip4/34.18.98.38/udp/30000/quic-v1 \\
+  --peer /ip4/96.230.252.205/udp/3006/quic-v1 \\
+  --peer /ip4/94.205.40.29/udp/3006/quic-v1 \\
+  --peer /ip4/159.112.204.186/udp/3006/quic-v1 \\
+  --peer /ip4/217.14.223.78/udp/3006/quic-v1"
+  echo -e "${GREEN}>> Miner1 started with peers in screen session 'miner1'.${RESET}"
+else
+  echo -e "${RED}Invalid choice. Exiting...${RESET}"
+  exit 1
+fi
+
+# Screen usage instructions
+echo -e "${CYAN}To view a miner screen: screen -r miner1, miner2, ...${RESET}"
+echo -e "${CYAN}To detach from screen: Ctrl + A then D${RESET}"
+echo -e "${CYAN}To list all screens: screen -ls${RESET}"
 
 # Ask to start more miners
 echo -e "${YELLOW}Do you want to run multiple miners? Enter number (e.g. 3 for 3 miners total), or 1 to skip:${RESET}"
@@ -62,7 +94,7 @@ if [[ "$NUM_MINERS" =~ ^[2-9][0-9]*$ ]]; then
         MINER_DIR="$NCK_DIR/miner$i"
         echo -e "${CYAN}>> Setting up miner$i...${RESET}"
         mkdir -p "$MINER_DIR"
-        screen -dmS miner$i bash -c "cd $MINER_DIR && \
+        screen -dmS miner$i bash -c "cd $MINER_DIR && \\
 RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \\
 MINIMAL_LOG_FORMAT=true \\
 $NCK_BIN --mining-pubkey $MINING_KEY --mine"
@@ -72,6 +104,4 @@ else
     echo -e "${CYAN}>> Skipping multiple miners setup.${RESET}"
 fi
 
-echo -e "${YELLOW}To view a miner screen: screen -r miner1, miner2, ...${RESET}"
-echo -e "${YELLOW}To detach: Ctrl + A + D${RESET}"
 echo -e "${GREEN}All requested miners are now running.${RESET}"
