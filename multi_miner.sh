@@ -100,9 +100,11 @@ echo -e "${CYAN}To list all screens: screen -ls${RESET}"
 # Ask to start more miners
 echo -e "${YELLOW}Do you want to run multiple miners? Enter number (e.g. 3 for 3 miners total), or 1 to skip:${RESET}"
 read -rp "> " NUM_MINERS
+NUM_MINERS=$(echo "$NUM_MINERS" | tr -d '[:space:]')
 
-if [[ "$NUM_MINERS" =~ ^[2-9][0-9]*$ ]]; then
-    for i in $(seq 2 "$NUM_MINERS"); do
+
+if [[ "$NUM_MINERS" =~ ^[0-9]+$ ]] && [[ "$NUM_MINERS" -ge 2 ]]; then
+    for i in $(seq 1 "$NUM_MINERS"); do
         MINER_DIR="$NCK_DIR/miner$i"
         echo -e "${CYAN}>> Setting up miner$i...${RESET}"
         mkdir -p "$MINER_DIR"
@@ -111,6 +113,7 @@ RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=in
 MINIMAL_LOG_FORMAT=true \\
 $NCK_BIN --mining-pubkey $MINING_KEY --mine"
         echo -e "${GREEN}>> Miner $i started in screen session 'miner$i'.${RESET}"
+        sleep 5
     done
 else
     echo -e "${CYAN}>> Skipping multiple miners setup.${RESET}"
