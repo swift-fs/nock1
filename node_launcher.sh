@@ -45,13 +45,13 @@ if [ "$(id -u)" -eq 0 ]; then
     apt-get install sudo -y
   fi
 fi
-# ========== PHASE 1: BUILD ==========
+
 if [ ! -f "$BINARY_PATH" ]; then
     echo -e "${YELLOW}>> Nockchain not built yet. Starting Phase 1 (Build)...${RESET}"
 
     echo -e "${CYAN}>> Installing system dependencies...${RESET}"
     sudo apt-get update && sudo apt-get upgrade -y
-    sudo apt install -y curl ufw sudo screen iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libclang-dev llvm-dev
+    sudo apt install -y curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libclang-dev llvm-dev
 
     if ! command -v cargo &> /dev/null; then
         echo -e "${CYAN}>> Installing Rust...${RESET}"
@@ -121,24 +121,23 @@ sudo ufw allow ssh
 sudo ufw allow 22
 sudo ufw allow 3005/tcp
 sudo ufw allow 3006/tcp
-sudo ufw allow 3007/tcp
-sudo ufw allow 3006/udp
 sudo ufw allow 3005/udp
-sudo ufw allow 3007/udp
+sudo ufw allow 3006/udp
 sudo ufw --force enable
 
-# ========== START MINER ==========
-echo -e "${CYAN}>> Starting miner in screen session 'miner'...${RESET}"
-screen -dmS miner bash -c "nockchain --mining-pubkey $MINING_KEY --mine \
-  --peer /ip4/95.216.102.60/udp/3006/quic-v1 \
-  --peer /ip4/65.108.123.225/udp/3006/quic-v1 \
-  --peer /ip4/65.109.156.108/udp/3006/quic-v1 \
-  --peer /ip4/65.21.67.175/udp/3006/quic-v1 \
-  --peer /ip4/65.109.156.172/udp/3006/quic-v1 \
-  --peer /ip4/34.174.22.166/udp/3006/quic-v1 \
-  --peer /ip4/34.95.155.151/udp/30000/quic-v1 \
-  --peer /ip4/34.18.98.38/udp/30000/quic-v1"
-
-echo -e "${GREEN}>> Miner is now running in screen 'miner'!${RESET}"
-echo -e "${YELLOW}To view it: screen -r miner${RESET}"
-echo -e "${YELLOW}To list all screens: screen -ls${RESET}"
+# ========== MINING INSTRUCTIONS ==========
+echo -e "${CYAN}>> Run Miner Instructions (Advanced Setup for Multiple Miners)${RESET}"
+echo -e "\n${YELLOW}Minimum RAM required:${RESET} Linux: 128 GB | macOS: 16 GB"
+echo -e "\nTo run Miner 1 (repeat for Miner 2, Miner 3, etc.):"
+echo -e "\nCommands:\n"
+echo -e "cd ~/nockchain"
+echo -e "mkdir miner1 && cd miner1"
+echo -e "screen -S miner1"
+echo -e "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \\\nMINIMAL_LOG_FORMAT=true \\\nnockchain --mining-pubkey $MINING_KEY --mine"
+echo -e "\nTo minimize screen: Ctrl + A + D"
+echo -e "\n${CYAN}NOTES:${RESET}"
+echo -e "Note 1: Early stage — commands may change"
+echo -e "Note 2: Ensure you wait until you see \"generating new candidate for block production\""
+echo -e "Note 3: If you see \"Could not load mining kernel\", you are out of RAM"
+echo -e "Note 4: Dial timeout errors are normal"
+echo -e "Note 5: Upcoming configuration will support <128GB RAM setups on Linux"
