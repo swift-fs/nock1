@@ -127,7 +127,6 @@ sudo ufw --force enable
 
 # ========== MINING INSTRUCTIONS ==========
 echo -e "${CYAN}>> Run Miner Instructions (Advanced Setup for Multiple Miners)${RESET}"
-echo -e "\n${YELLOW}Minimum RAM required:${RESET} Linux: 128 GB | macOS: 16 GB"
 echo -e "\nTo run Miner 1 (repeat for Miner 2, Miner 3, etc.):"
 echo -e "\nCommands:\n"
 echo -e "cd ~/nockchain"
@@ -136,8 +135,3 @@ echo -e "screen -S miner1"
 echo -e "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \\\nMINIMAL_LOG_FORMAT=true \\\nnockchain --mining-pubkey $MINING_KEY --mine"
 echo -e "\nTo minimize screen: Ctrl + A + D"
 echo -e "\n${CYAN}NOTES:${RESET}"
-echo -e "Note 1: Early stage — commands may change"
-echo -e "Note 2: Ensure you wait until you see \"generating new candidate for block production\""
-echo -e "Note 3: If you see \"Could not load mining kernel\", you are out of RAM"
-echo -e "Note 4: Dial timeout errors are normal"
-echo -e "Note 5: Upcoming configuration will support <128GB RAM setups on Linux"
