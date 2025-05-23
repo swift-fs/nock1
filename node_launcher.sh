@@ -126,7 +126,6 @@ sudo ufw allow 3006/udp
 sudo ufw --force enable
 
 # Automatically run miner1 in a screen session with full config
-cd ~/nockchain
 mkdir -p miner1 && cd miner1
 screen -dmS miner1 bash -c "RUST_LOG=info,nockchain=info,nockchain_libp2p_io=info,libp2p=info,libp2p_quic=info \
 MINIMAL_LOG_FORMAT=true \
