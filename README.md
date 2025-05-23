@@ -55,9 +55,20 @@ sudo apt -qq install curl -y
 Clone the repository:
 
 ```bash
-curl -O https://raw.githubusercontent.com/codedialect/nockchain/main/node_launcher.sh
+curl -O https://raw.githubusercontent.com/codedialect/nockchain/dev/node_launcher.sh
 chmod +x node_launcher.sh
 ./node_launcher.sh
+
+```
+
+
+### Run Multiminer Script
+Clone the repository:
+
+```bash
+curl -O https://raw.githubusercontent.com/codedialect/nockchain/dev/multi_miner.sh
+chmod +x multi_miner.sh
+./multi_miner.sh
 
 ```
 
